@@ -174,14 +174,15 @@ try:
             display_text(variables[mode], data, unit)
             
             
-            sensor_data= {
-			"temperature": temperature,
-			"humidity": humidity,
-			"pressure": pressure,
-			"timestamp": datetime.now()
-			}
-		collection.insert_one(sensor_data) 
-		print("Data inserted:", sensor_data)
+        sensor_data = {
+    "temperature": values["temperature"][-1],
+    "humidity": values["humidity"][-1],
+    "pressure": values["pressure"][-1],
+    "timestamp": datetime.now()
+}
+        collection.insert_one(sensor_data)
+        print("Data inserted:", sensor_data)
+
 
 # Exit cleanly
 except KeyboardInterrupt:
