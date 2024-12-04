@@ -114,11 +114,18 @@ mode = 0  # The starting mode
 last_page = 0
 light = 1
 
+'''
 # Create a values dict to store the data
 variables = ["temperature",
              "pressure",
              "humidity",
              "light"]
+'''
+
+# Create a values dict to store the data
+variables = ["temperature",
+             "humidity"]
+
 
 values = {}
 
@@ -130,7 +137,7 @@ try:
     while True:
         proximity = ltr559.get_proximity()
         
-        time.sleep(1)
+        time.sleep(5)
         mode += 1
         mode %= len(variables)
 		
@@ -139,6 +146,8 @@ try:
 		# mode += 1
 		# mode %= len(variables)
         # last_page = time.time()
+
+
 
         # One mode for each variable
         if mode == 0:
@@ -152,17 +161,20 @@ try:
             data = raw_temp - ((avg_cpu_temp - raw_temp) / factor)
             display_text(variables[mode], data, unit)
 
+
         if mode == 1:
+            # variable = "humidity"
+            unit = "%"
+            data = bme280.get_humidity()
+            display_text(variables[mode], data, unit)
+            
+            '''
+        if mode == 2:
             # variable = "pressure"
             unit = "hPa"
             data = bme280.get_pressure()
             display_text(variables[mode], data, unit)
 
-        if mode == 2:
-            # variable = "humidity"
-            unit = "%"
-            data = bme280.get_humidity()
-            display_text(variables[mode], data, unit)
 
         if mode == 3:
             # variable = "light"
@@ -172,16 +184,16 @@ try:
             else:
                 data = 1
             display_text(variables[mode], data, unit)
-            
+            '''
             
         sensor_data = {
     "temperature": values["temperature"][-1],
     "humidity": values["humidity"][-1],
-    "pressure": values["pressure"][-1],
     "timestamp": datetime.now()
-}
+	}
         collection.insert_one(sensor_data)
         print("Data inserted:", sensor_data)
+        print()
 
 
 # Exit cleanly
