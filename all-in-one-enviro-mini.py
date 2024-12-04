@@ -185,12 +185,20 @@ try:
                 data = 1
             display_text(variables[mode], data, unit)
             '''
-            
+
+	    '''
         sensor_data = {
     "temperature": values["temperature"][-1],
     "humidity": values["humidity"][-1],
     "timestamp": datetime.now()
 	}
+ 	'''
+	    sensor_data = {
+    "temperature": round(values["temperature"][-1], 2),  # Round to 2 decimal places
+    "humidity": round(values["humidity"][-1], 2),        # Round to 2 decimal places
+    "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # Format timestamp
+}
+
         collection.insert_one(sensor_data)
         print("Data inserted:", sensor_data)
         print()
